@@ -117,7 +117,7 @@ func (b *AMQPCeleryBroker) StartConsumingChannel() error {
 func (b *AMQPCeleryBroker) SendCeleryMessage(message *CeleryMessage) error {
 	taskMessage := message.GetTaskMessage()
 	//log.Printf("sending task ID %s\n", taskMessage.ID)
-	queueName := "celery"
+	queueName := b.queue.Name
 	_, err := b.QueueDeclare(
 		queueName, // name
 		true,      // durable
