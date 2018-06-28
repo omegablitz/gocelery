@@ -55,6 +55,14 @@ func (cc *CeleryClient) Delay(task string, args ...interface{}) (*AsyncResult, e
 	return cc.delay(celeryTask)
 }
 
+// DelayLater is the same as Delay except it queues it for later.
+func (cc *CeleryClient) DelayLater(task string, delay time.Duration, args ...interface{}) (*AsyncResult, error) {
+	celeryTask := getTaskMessage(task)
+	celeryTask.ETA = time.Now().Add(delay).Format(time.RFC3339)
+	celeryTask.Args = args
+	return cc.delay(celeryTask)
+}
+
 // DelayKwargs gets asynchronous results with argument map
 func (cc *CeleryClient) DelayKwargs(task string, args map[string]interface{}) (*AsyncResult, error) {
 	celeryTask := getTaskMessage(task)
